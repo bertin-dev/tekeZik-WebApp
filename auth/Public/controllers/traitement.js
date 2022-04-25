@@ -1,8 +1,10 @@
 const success_msg = " ajouté avec succès.";
 const identite = "utilisateur";
 const ingredient = "Tour date";
-const compositon = "compositon";
-
+const playlist = "Playlist";
+const cover = "Cover";
+const rs = "Réseau social";
+const article = "article";
 /* ==========================================================================
 Ajout des recettes
 ========================================================================== */
@@ -21,14 +23,12 @@ $(function() {
         var statut1 = $('#idSiteWebRapport');
         var nom = $('#last_name').val(),
             prenom = $('#first_name').val(),
-            town = $('#town').val(),
-            quartier = $('#quartier').val(),
             phone = $('#phone').val(),
             email = $('#email').val(),
             password = $('#password').val();
 
 
-        if (nom == '' || prenom == '' || town == ''|| quartier == '' || phone == '' || email == '' || password == '') {
+        if (nom == '' || prenom == '' || phone == '' || email == '' || password == '') {
             statut1.html('Veuillez Remplir Tous les Champs').fadeIn(400);
         }
 
@@ -108,7 +108,7 @@ $(function() {
             dataType: 'html', /* selon le retour attendu*/
             data:data,
             success:function(data){
-                var cat = $('#rapportMsg, #rapportTSW, #rapportS, #rapportFt');
+                var cat = $('#rapportMsg, #rapportTSW, #rapportS, #rapportFt, #rapportTSW2, #rapportTSW3, #rapportTSW4, #rapportTSW5');
                 if(data === 'success'){
                     $('.loader').hide();
                     cat.removeClass('alert-danger');
@@ -184,7 +184,6 @@ $(function() {
                     if(result.hasClass('is-invalid')){
                         result.removeClass('is-invalid');
                         result.addClass('is-valid');
-                        $('#valid-feedback').html(data);
                     }
 
                     setTimeout(function () {
@@ -225,11 +224,12 @@ $(function() {
 });
 
 
+
 /* ==========================================================================
-Ajout des COMPOSITIONS
+Ajout des covers
 ========================================================================== */
 $(function() {
-    $('#form_composition').on('submit', function (e) {
+    $('#form_addCover').on('submit', function (e) {
         /* On empêche le navigateur de soumettre le formulaire*/
         e.preventDefault();
         $('.loader').show();
@@ -247,20 +247,327 @@ $(function() {
             data:data,
             success:function(data){
                 var cat = $('#submenuRapport11');
+                var result = $('#cover_name');
+
+                var result_submenu1 = $('#result_submenu11');
+                if(data === 'success'){
+                    $('.loader').hide();
+                    cat.removeClass('alert-danger');
+                    cat.addClass('alert-success');
+                    $('.currentSend').attr('value', 'Ajouter');
+                    cat.html(cover + ' ' + success_msg).show();
+
+
+                    if(result.hasClass('is-invalid')){
+                        result.removeClass('is-invalid');
+                        result.addClass('is-valid');
+                    }
+
+                    setTimeout(function () {
+                        cat.html(cover + ' ' + success_msg).slideDown().hide();
+                        /*$('body').load('index.php?id=2', function() {
+                        });*/
+                        $(location).attr('href',"index.php?id=3");
+                    }, 5000);
+
+                } else {
+
+                    if(cat.hasClass('alert-success')){
+                        cat.removeClass('alert-success');
+                        cat.addClass('alert-danger');
+                    }
+
+                    if(result.hasClass('is-valid')){
+                        result.removeClass('is-valid');
+                        result.addClass('is-invalid');
+                    } else{
+                        result.addClass('is-invalid');
+                    }
+
+
+                    result_submenu1.removeClass('valid-feedback');
+                    result_submenu1.addClass('invalid-feedback');
+                    result_submenu1.html(data).show();
+
+
+                    cat.html(data).show();
+                    $('.loader').hide();
+                    $('.currentSend').attr('value', 'Ajouter');
+                }
+            }
+
+        });
+    });
+});
+
+
+
+
+
+
+/* ==========================================================================
+Ajout des PLAYLISTS
+========================================================================== */
+$(function() {
+    $('#form_playlist').on('submit', function (e) {
+        /* On empêche le navigateur de soumettre le formulaire*/
+        e.preventDefault();
+        $('.loader').show();
+        $('.currentSend').attr('value', 'En cours...');
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, /* obligatoire pour de l'upload*/
+            processData: false, /* obligatoire pour de l'upload*/
+            dataType: 'html', /* selon le retour attendu*/
+            data:data,
+            success:function(data){
+                var cat = $('#submenuRapport12');
 
                 if(data === 'success'){
                     $('.loader').hide();
                     cat.removeClass('alert-danger');
                     cat.addClass('alert-success');
                     $('.currentSend').attr('value', 'Ajouter');
-                    cat.html(compositon + ' ' + success_msg).show();
-                    $('#valid-feedback').html(data);
+                    cat.html(playlist + ' ' + success_msg).show();
 
                     setTimeout(function () {
-                        cat.html(compositon + ' ' + success_msg).slideDown().hide();
+                        cat.html(playlist + ' ' + success_msg).slideDown().hide();
                         /*$('body').load('index.php?id=3', function() {
                         });*/
-                        $(location).attr('href',"index.php?id=3");
+                        $(location).attr('href',"index.php?id=4");
+                    }, 2000);
+
+                } else {
+
+                    if(cat.hasClass('alert-success')){
+                        cat.removeClass('alert-success');
+                        cat.addClass('alert-danger');
+                    }
+
+                    cat.html(data).show();
+                    $('.loader').hide();
+                    $('.currentSend').attr('value', 'Ajouter');
+                }
+            }
+
+        });
+    });
+});
+
+
+
+/* ==========================================================================
+Attribuer des covers à une PLAYLISTS
+========================================================================== */
+$(function() {
+    $('#form_attr').on('submit', function (e) {
+        /* On empêche le navigateur de soumettre le formulaire*/
+        e.preventDefault();
+        $('.loader').show();
+        $('.currentSend').attr('value', 'En cours...');
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, /* obligatoire pour de l'upload*/
+            processData: false, /* obligatoire pour de l'upload*/
+            dataType: 'html', /* selon le retour attendu*/
+            data:data,
+            success:function(data){
+                var cat = $('#submenuRapport13');
+
+                if(data === 'success'){
+                    $('.loader').hide();
+                    cat.removeClass('alert-danger');
+                    cat.addClass('alert-success');
+                    $('.currentSend').attr('value', 'Ajouter');
+                    cat.html(playlist + ' ' + success_msg).show();
+
+                    setTimeout(function () {
+                        cat.html(playlist + ' ' + success_msg).slideDown().hide();
+                        /*$('body').load('index.php?id=3', function() {
+                        });*/
+                        $(location).attr('href',"index.php?id=4");
+                    }, 2000);
+
+                } else {
+
+                    if(cat.hasClass('alert-success')){
+                        cat.removeClass('alert-success');
+                        cat.addClass('alert-danger');
+                    }
+
+                    cat.html(data).show();
+                    $('.loader').hide();
+                    $('.currentSend').attr('value', 'Ajouter');
+                }
+            }
+
+        });
+    });
+});
+
+
+
+
+
+/* ==========================================================================
+Ajout des liens vers les reseaux
+========================================================================== */
+$(function() {
+    $('#form_rs').on('submit', function (e) {
+        /* On empêche le navigateur de soumettre le formulaire*/
+        e.preventDefault();
+        $('.loader').show();
+        $('.currentSend').attr('value', 'En cours...');
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, /* obligatoire pour de l'upload*/
+            processData: false, /* obligatoire pour de l'upload*/
+            dataType: 'html', /* selon le retour attendu*/
+            data:data,
+            success:function(data){
+                var cat = $('#submenuRapport14');
+
+                if(data === 'success'){
+                    $('.loader').hide();
+                    cat.removeClass('alert-danger');
+                    cat.addClass('alert-success');
+                    $('.currentSend').attr('value', 'Ajouter');
+                    cat.html(rs + ' ' + success_msg).show();
+
+                    setTimeout(function () {
+                        cat.html(rs + ' ' + success_msg).slideDown().hide();
+                        /*$('body').load('index.php?id=3', function() {
+                        });*/
+                        $(location).attr('href',"index.php?id=5");
+                    }, 2000);
+
+                } else {
+
+                    if(cat.hasClass('alert-success')){
+                        cat.removeClass('alert-success');
+                        cat.addClass('alert-danger');
+                    }
+
+                    cat.html(data).show();
+                    $('.loader').hide();
+                    $('.currentSend').attr('value', 'Ajouter');
+                }
+            }
+
+        });
+    });
+});
+
+
+
+
+/* ==========================================================================
+Attribuer des covers à un ou plusieurs réseaux sociaux
+========================================================================== */
+$(function() {
+    $('#form_attr_sm').on('submit', function (e) {
+        /* On empêche le navigateur de soumettre le formulaire*/
+        e.preventDefault();
+        $('.loader').show();
+        $('.currentSend').attr('value', 'En cours...');
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, /* obligatoire pour de l'upload*/
+            processData: false, /* obligatoire pour de l'upload*/
+            dataType: 'html', /* selon le retour attendu*/
+            data:data,
+            success:function(data){
+                var cat = $('#submenuRapport15');
+
+                if(data === 'success'){
+                    $('.loader').hide();
+                    cat.removeClass('alert-danger');
+                    cat.addClass('alert-success');
+                    $('.currentSend').attr('value', 'Ajouter');
+                    cat.html(cover + ' ' + success_msg).show();
+
+                    setTimeout(function () {
+                        cat.html(cover + ' ' + success_msg).slideDown().hide();
+                        /*$('body').load('index.php?id=3', function() {
+                        });*/
+                        $(location).attr('href',"index.php?id=5");
+                    }, 2000);
+
+                } else {
+
+                    if(cat.hasClass('alert-success')){
+                        cat.removeClass('alert-success');
+                        cat.addClass('alert-danger');
+                    }
+
+                    cat.html(data).show();
+                    $('.loader').hide();
+                    $('.currentSend').attr('value', 'Ajouter');
+                }
+            }
+
+        });
+    });
+});
+
+
+
+
+/* ==========================================================================
+Ajout articles
+========================================================================== */
+$(function() {
+    $('#form_article').on('submit', function (e) {
+        /* On empêche le navigateur de soumettre le formulaire*/
+        e.preventDefault();
+        $('.loader').show();
+        $('.currentSend').attr('value', 'En cours...');
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, /* obligatoire pour de l'upload*/
+            processData: false, /* obligatoire pour de l'upload*/
+            dataType: 'html', /* selon le retour attendu*/
+            data:data,
+            success:function(data){
+                var cat = $('#submenuRapport16');
+
+                if(data === 'success'){
+                    $('.loader').hide();
+                    cat.removeClass('alert-danger');
+                    cat.addClass('alert-success');
+                    $('.currentSend').attr('value', 'Ajouter');
+                    cat.html(article + ' ' + success_msg).show();
+
+                    setTimeout(function () {
+                        cat.html(article + ' ' + success_msg).slideDown().hide();
+                        /*$('body').load('index.php?id=3', function() {
+                        });*/
+                        $(location).attr('href',"index.php?id=6");
                     }, 2000);
 
                 } else {

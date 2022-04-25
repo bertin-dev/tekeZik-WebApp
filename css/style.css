@@ -566,7 +566,7 @@ p{
 .header{
 	text-align:center;
 	background: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)),
-			url(../img/caroussel-2x.jpg) center repeat;
+			url(../img/caroussel.jpg) center repeat;
 	font-size: 0;
 	left: 0;
 	top: -84.452px;
@@ -908,7 +908,7 @@ img {
 /* Clients
 ---------------------------------*/
 .client-part{
-	background:url(../img/BA_Music_02.jpg) center center no-repeat;
+	background:url(../img/tour_dates.jpg) center center no-repeat;
 	background-size:cover;
 	font-size: 0;
 	left: 0;
@@ -920,7 +920,7 @@ img {
 
 
 .client-follow{
-	background:url(../img/BA_Follow_Grey+Edit_03+copy.jpg) center center no-repeat;
+	background:url(../img/home.jpg) center center no-repeat;
 	background-size:cover;
 	font-size: 0;
 	left: 0;
