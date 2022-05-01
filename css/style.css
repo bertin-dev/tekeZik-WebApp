@@ -198,7 +198,7 @@ a, a:hover, a:active{ outline:0px !important}
 .sqs-block {
 	position: relative;
 	height: auto;
-	padding-top: 17px;
+	padding-top: 7px;
 	padding-bottom: 17px;
 }
 
@@ -419,13 +419,13 @@ h1:not(.site-title):not(.entry-title):first-child, h2:first-child, h3:first-chil
 h1:not(.site-title):not(.logo-image):not(.page-title), .entry-title {
 	font-family: "Raleway",Arial,sans-serif;
 	font-size: 48px;
-	line-height: 1.35em;
+	line-height: 1.35em!important;
 	font-family: bebas-neue;
-	font-weight: 400;
+	font-weight: bold;
 	font-style: normal;
-	font-size: 72px;
+	font-size: 55px;
 	line-height: 1.1em;
-	letter-spacing: 0px;
+	letter-spacing: 0;
 	text-transform: none;
 }
 .sqs-block-html .sqs-block-content>*:first-child {
@@ -565,13 +565,13 @@ p{
 
 .header{
 	text-align:center;
-	background: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)),
-			url(../img/caroussel.jpg) center repeat;
+	background: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(255,255,255,.2)),
+			url(../img/home.jpg) center repeat;
 	font-size: 0;
 	left: 0;
-	top: -84.452px;
+	top: 0;
 	width: 100%;
-	height: 939px;
+	height: 839px;
 
 	background-size: cover;
 	color: white;
@@ -698,20 +698,37 @@ color: #fff;
 }
 .main-nav li a{
 	display:inline-block;
-	color:#222222;
 	text-transform:uppercase;
-	font-family: 'Montserrat', sans-serif;
 	text-decoration: none;
-	line-height:20px;
-	margin:17px 32px;
+	line-height:1rem;
+	margin:17px 22px;
 	transition:all 0.3s ease-in-out;
 	-moz-transition:all 0.3s ease-in-out;
 	-webkit-transition:all 0.3s ease-in-out;
+	font-size: 18px;
+	font-family: "Raleway",Arial,sans-serif;
+	font-weight: bold;
+	font-family: bebas-neue;
+	font-weight: 400;
+	font-style: normal;
+	letter-spacing: 1px;
+	color: #48c7b4;
 }
 
 .main-nav li a:hover{ 
 	text-decoration:none;
-	color: #7cc576;
+	color: #2b2b2b;
+}
+
+
+.sqs-block-markdown .sqs-block-content *:last-child {
+	margin-bottom: 0;
+}
+.sqs-block-markdown .sqs-block-content *:first-child {
+	margin-top: 0;
+}
+h1:not(.site-title):not(.entry-title), h2, h3 {
+	margin: 1.5em auto 0.3em;
 }
 
 .small-logo{ 
@@ -907,6 +924,12 @@ img {
 
 /* Clients
 ---------------------------------*/
+.bg-opacty{
+	background: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(255,255,255,.2));
+	z-index: 10000;
+}
+
+
 .client-part{
 	background:url(../img/tour_dates.jpg) center center no-repeat;
 	background-size:cover;
@@ -914,13 +937,19 @@ img {
 	left: 0;
 	top: 0;
 	width: 100%;
+
+	filter: blur(5px);
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
 }
 
 
 
 
 .client-follow{
-	background:url(../img/home.jpg) center center no-repeat;
+	background:url(../img/caroussel.jpg) center center no-repeat;
 	background-size:cover;
 	font-size: 0;
 	left: 0;
@@ -1361,3 +1390,8 @@ border: 2px solid #fff;
 }
 
 
+@media (max-width: 768px) {
+	#myHeader{
+		display: none;
+	}
+}

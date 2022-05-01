@@ -13,6 +13,27 @@ if (isset($_SESSION['ID_USER'])) {
     $last_name = "";
     $first_name = "";
 }
+
+
+//recuperation de la veritable adresse ip du visiteur
+function get_ip(){
+
+    //IP si internet partagé
+    if(isset($_SERVER['HTTP_CLIENT_IP'])){
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+
+
+    //IP derriere un proxy
+    elseif(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+
+    //IP normal
+    else{
+        return isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,88 +71,25 @@ if (isset($_SESSION['ID_USER'])) {
 
 
             <div class="container-fluid">
-                <?php
-                ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <?php
-                        if (isset($_GET['updateEvent'])) {
-                            foreach (App::getDB()->query('SELECT * FROM events WHERE id=' . $_GET['updateEvent']) as $ing):
-                                ?>
-                                <h1 class="h3 mb-1 text-gray-800">Modifier Footer</h1>
-                                <div id="rapportFt" class="alert alert-danger" style="display:none;"></div>
-                                <form class="user form_Ft" role="form"
-                                      action="controllers/traitement.php?updateIng=updateIng" method="post">
-                                    <input type="hidden" name="event_id" value="<?= $ing->id; ?>">
-
-                                    <div class="form-group">
-                                        <input value="<?= $ing->name; ?>" type="text" class="form-control" id="name"
-                                               name="name"
-                                               aria-describedby="name" placeholder="Libelle Tour Date *" required>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <input value="<?= $ing->location; ?>" type="text" class="form-control"
-                                               id="location" name="location"
-                                               aria-describedby="location" placeholder="Lieu *" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="my-1 mr-2" for="state_ticket">Etat des Tickets</label>
-                                        <select class="custom-select my-1 mr-sm-2" id="state_ticket"
-                                                name="state_ticket">
-                                            <option value="available">Disponible</option>
-                                            <option value="unavailable">Indisponible</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input value="<?= $ing->link_ticket; ?>" type="url" class="form-control"
-                                               id="link_ticket" name="link_ticket"
-                                               aria-describedby="link_ticket"
-                                               placeholder="Plateforme de distribution tickets">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input value="<?= $ing->start_event; ?>" type="datetime-local"
-                                               class="form-control" id="start_event" name="start_event"
-                                               aria-describedby="start_event" placeholder="Date d\'ouverture"
-                                               required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input value="<?= $ing->end_event; ?>" type="datetime-local"
-                                               class="form-control" id="end_event" name="end_event"
-                                               aria-describedby="end_event" placeholder="Date fermeture" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input type="submit" class="btn btn-primary btn-user btn-block currentSend"
-                                               value="Ajouter"/>
-                                        <center><img src="img/loader.gif" class="loader" style="display:none;">
-                                        </center>
-                                    </div>
-
-                                </form>
-                            <?php
-                            endforeach;
-                        } else {
                             $result = App::getDB()->rowCount('SELECT * FROM articles INNER JOIN paniers p 
-                                                                       ON articles.id = p.article_id');
+                                                                       ON articles.id = p.article_id
+                                                                       WHERE ip="'.get_ip().'" ');
 
                             // Si une erreur survient
                             if ($result == 0) {
                                 echo '
                             <div class="card shadow mb-4 text-center">
-                            <p>Votre liste de commandes est vide</p>
+                            <p>Votre liste des commandes est vide</p>
                             </div>';
                             } else {
                                 ?>
                                 <!-- DataTales Example -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 text-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">Liste de commandes</h6>
+                                        <h6 class="m-0 font-weight-bold" style="font-size: 25px">Liste des commandes</h6>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -139,7 +97,6 @@ if (isset($_SESSION['ID_USER'])) {
                                                    width="100%" cellspacing="0">
                                                 <thead>
                                                 <tr>
-                                                    <th>#id</th>
                                                     <th>Articles</th>
                                                     <th>Nbre Articles</th>
                                                     <th>Prix Unitaire</th>
@@ -149,7 +106,6 @@ if (isset($_SESSION['ID_USER'])) {
                                                 </thead>
                                                 <tfoot>
                                                 <tr>
-                                                    <th>#id</th>
                                                     <th>Articles</th>
                                                     <th>Nbre Articles</th>
                                                     <th>Prix Unitaire</th>
@@ -160,18 +116,18 @@ if (isset($_SESSION['ID_USER'])) {
                                                 <tbody>
 
                                                 <?php
-                                                foreach (App::getDB()->query('SELECT p.id AS PiD, COUNT(*) AS nbrArticle, name, SUM(price) AS pTotal, price, image FROM articles INNER JOIN paniers p 
+                                                foreach (App::getDB()->query('SELECT p.id AS PiD, COUNT(*) AS nbrArticle, name, SUM(price) AS pTotal, price, image, article_id FROM articles INNER JOIN paniers p 
                                                                                        ON articles.id = p.article_id
+                                                                                       WHERE ip = "'.get_ip().'"
                                                                                        GROUP BY price') as $ingredient):
 
                                                     echo '<tr>
-                                                <td title="ID">#' . $ingredient->PiD . '</td>
                                                 <td title="Articles">' . $ingredient->name . '</td> 
                                                 <td title="Nbre Articles">' . $ingredient->nbrArticle . '</td>
                                                 <td title="Prix Unitaire">' . $ingredient->price . '</td>
                                                 <td title="Prix total">' . $ingredient->pTotal . '</td>
                                                 <td title="Image"><img class="img-fluid" src="' . str_replace('../img/', 'img/', $ingredient->image) . '" alt="' . $ingredient->name . '" width="100"></td>
-                                            
+                                               <td title="Supprimer"><a href="report.php&delCmd=' . $ingredient->article_id . '" onclick="deleteCmd(' . $ingredient->article_id . '); return false;">Supprimer</a></td>
                                                  
                                             </tr>';
                                                 endforeach;
@@ -183,20 +139,81 @@ if (isset($_SESSION['ID_USER'])) {
                                 </div>
                                 <?php
                             }
-                        }
                         ?>
                     </div>
+
+
+                    <div class="col-lg-12">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2 col-lg-2"><u><strong>COMMANDE</strong></u></h5>
+                            <div class="card shadow mb-4 col-lg-10">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable_formation"
+                                               width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>Articles commandés</th>
+                                                <th>Prix Total</th>
+                                                <th>Moyen de paiement</th>
+                                                <th>Bénéficiaire</th>
+                                                <th>Telephone</th>
+                                                <th>Valider</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            <?php
+                                            $total = 0;
+                                            $nbre = 0;
+                                            foreach (App::getDB()->query('SELECT COUNT(*) AS nbrArticle, name, SUM(price) AS pTotal 
+                                                                                   FROM articles 
+                                                                                   INNER JOIN paniers p 
+                                                                                   ON articles.id = p.article_id
+                                                                                   WHERE ip = "'.get_ip().'"
+                                                                                   GROUP BY price') as $ingredient):
+
+                                                $total += $ingredient->pTotal;
+                                                $nbre += $ingredient->nbrArticle;
+                                            endforeach;
+
+                                            echo '<tr>
+                                                <td title="Nbre Articles">' . $nbre . '</td>
+                                                <td title="Prix total">' . $total . ' FCFA</td>
+                                                <td title="Moyen de paiement" style="max-lines: 1"><img class="img-fluid" src="img/om.webp" width="75">
+                                                ou <img class="img-fluid" src="img/mtn.webp" width="75"></td>';
+
+                                              $requete = 'SELECT * FROM users INNER JOIN roles r
+                                                          ON users.role_id = r.id 
+                                                          WHERE name="administrateur" LIMIT 1';
+
+                                              foreach ($connexion->query($requete) as $user):
+
+                                              echo '<td title="Bénéficiaire">'.$user->last_name.' '.$user->first_name.'</td>
+                                                <td title="Telephone">'.$user->phone.'</td>
+                                               <td title="Valider"><a href="#">Valider la commande</a></td>';
+                                              endforeach;
+                                                 
+                                            echo '</tr>';
+
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-                <?php
-                ?>
                 <script>
-                    function deleteEvent(element) {
-                        if (confirm("Êtes-vous sur de vouloir supprimer cet evenement ?")) {
+                    function deleteCmd(element) {
+                        if (confirm("Êtes-vous sur de vouloir supprimer cet commande ?")) {
                             console.log('suppression effectué avec succès');
 
 
                             setTimeout(function () {
-                                $(location).attr('href', "controllers/traitement.php?delEvent=" + element);
+                                $(location).attr('href', "controllers/traitement.php?delCmd=" + element);
                             }, 3000);
 
 

@@ -52,17 +52,49 @@ $connexion = App::getDB();
 <div id="siteWrapper">
 
 
+
+
+
+    <div style="overflow:hidden;">
+        <header class="header" id="header">
+            <div class="container">
+                <div class="row">
+                    <header>
+                        <nav class="text-center" id="myHeader"><!--main-nav-start-->
+                            <div class="container">
+                                <ul class="main-nav" style="white-space: normal;display: block;">
+                                    <li><a href="#header">HOME</a></li>
+                                    <li><a href="#service">TOUR</a></li>
+                                    <!--<li><a href="#music">MUSIC</a></li>-->
+                                    <li><a href="#merch">MERCH</a></li>
+                                    <li class="small-logo">
+                                        <a class="logo animated fadeInDown delay-07s" href="#header"><img alt="" src="tz.png"></a>
+                                    </li>
+                                    <li><a href="#video">VIDEO</a></li>
+                                    <li><a href="#follow">FOLLOW</a></li>
+                                    <li><a href="#contact">CONTACT</a></li>
+                                </ul>
+                                <a class="res-nav_click" href="#"><i class="fa-bars"></i></a>
+                            </div>
+                        </nav><!--main-nav-end-->
+                    </header>
+                </div>
+            </div>
+        </header>
+    </div>
+
+
     <div class="index-section-image content-fill">
         <header>
-            <nav class="main-nav-outer" id="test"><!--main-nav-start-->
+            <nav class="main-nav-outer text-center" id="test"><!--main-nav-start-->
                 <div class="container">
-                    <ul class="main-nav">
+                    <ul class="main-nav" style="white-space: normal;display: block;">
                         <li><a href="#header">HOME</a></li>
                         <li><a href="#service">TOUR</a></li>
-                        <li><a href="#music">MUSIC</a></li>
+                        <!--<li><a href="#music">MUSIC</a></li>-->
                         <li><a href="#merch">MERCH</a></li>
                         <li class="small-logo">
-                                <a class="logo animated fadeInDown delay-07s" href="#header"><img alt="" src="tz.png"></a>
+                            <a class="logo animated fadeInDown delay-07s" href="#header"><img alt="" src="tz.png"></a>
                         </li>
                         <li><a href="#video">VIDEO</a></li>
                         <li><a href="#follow">FOLLOW</a></li>
@@ -76,21 +108,11 @@ $connexion = App::getDB();
     </div>
 
 
-    <div style="overflow:hidden;">
-        <header class="header" id="header">
-            <div class="container">
-                <figure class="logo animated fadeInDown delay-07s">
-                    <a href="#"><img alt="" src="tz.png"></a>
-                </figure>
-            </div>
-        </header>
-    </div>
-
-    <section class="main-section" id="service" style="color: white;"><!--main-section-start-->
+    <section class="main-section" id="service"><!--main-section-start-->
         <div class="container">
             <h1 class="entry-title">
                 <center data-preserve-html-node="true">
-                    <span data-preserve-html-node="true" style="color: white;">BOOKING</span>
+                    <span data-preserve-html-node="true">BOOKING</span>
                 </center>
             </h1>
 
@@ -102,6 +124,31 @@ $connexion = App::getDB();
             </div>
 
             <?php
+
+
+            $date = date_create(date('Y-m-d'));
+            date_add($date, date_interval_create_from_date_string('7 days'));
+            //echo date_format($date, 'Y-m-d');
+            setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+            /*
+             * @param CURDATE()
+             * @return 0=monday, 1=tuesday, 2=wednesday, 3=thursday, 4=friday, 5=saturday, 6=sunday
+             */
+
+            $currentDay = $connexion->query('SELECT WEEKDAY( CURDATE() ) AS day');
+
+            if($currentDay[0]->day==4){
+                $connexion->update('UPDATE events SET start_event=:start_event, updated_at=:updated_at WHERE id=:id',
+                    array('start_event'=>date_format($date, 'Y-m-d') .' 20:00:00', 'updated_at'=>time(),
+                        'id' => 2));
+            }
+
+            if($currentDay[0]->day==5){
+                $connexion->update('UPDATE events SET start_event=:start_event, updated_at=:updated_at WHERE id=:id',
+                    array('start_event'=>date_format($date, 'Y-m-d') .' 17:00:00', 'updated_at'=>time(),
+                        'id' => 1));
+            }
+
             foreach ($connexion->query('SELECT id, name, location, state_ticket, link_ticket, 
                                                  created_at, updated_at, user_id, DATE_FORMAT(start_event, "%a") AS a, DATE_FORMAT(start_event, "%M") AS m, DATE_FORMAT(start_event, "%D") AS d,
                                                  DATE_FORMAT(start_event, "%h:%i%p") AS hour, end_event 
@@ -140,7 +187,7 @@ $connexion = App::getDB();
                                         <a class="sqs-block-button-element--medium sqs-button-element--primary sqs-block-button-element"
                                            data-initialized="true"
                                            href="'.$tour_date->link_ticket.'">
-                                            Tickets
+                                            Réservation
                                         </a>
                                     </div>
                                 </div>
@@ -165,9 +212,13 @@ $connexion = App::getDB();
         </div>
     </section><!--main-section-end-->
 
-
-    <section class="main-section client-part index-section-image content-fill" id="music" style="overflow: hidden">
-        <!--main-section client-part-start-->
+    <?php
+    $requete = 'SELECT * FROM users INNER JOIN roles r
+                ON users.role_id = r.id 
+                WHERE name="administrateur" LIMIT 1';
+    ?>
+    <!--main-section client-part-start-->
+    <!--<section class="main-section client-part index-section-image content-fill" id="music" style="overflow: hidden">
 
         <div class="index-section-wrapper">
             <div class="index-image-overlay"></div>
@@ -177,7 +228,7 @@ $connexion = App::getDB();
 
 
                     <?php
-                    $query = 'SELECT cover_playlist.id AS myID, cover_playlist.cover_id, 
+                    $query = 'SELECT cover_playlist.id AS myID, cover_playlist.cover_id,
                                                          cover_playlist.playlist_id, 
                                                          covers.id, covers.name AS cName,covers.cover AS cover, covers.out_date, covers.user_id, covers.created_at, 
                                                          covers.updated_at, 
@@ -229,7 +280,7 @@ $connexion = App::getDB();
 
                     <div class="row">
                         <?php
-                        $requete = 'SELECT * FROM users INNER JOIN roles r 
+                        $requete = 'SELECT * FROM users INNER JOIN roles r
                                                              ON users.role_id = r.id 
                                                              WHERE name="administrateur" LIMIT 1';
                         foreach ($connexion->query($requete) as $user):
@@ -313,10 +364,11 @@ $connexion = App::getDB();
             </div>
 
         </div>
-    </section><!--main-section client-part-end-->
+    </section>-->
+    <!--main-section client-part-end-->
 
 
-    <section class="main-section" id="merch"><!--main-section alabaster-start-->
+    <section id="merch"><!--main-section alabaster-start-->
         <div class="container">
             <div class="row">
 
@@ -324,7 +376,7 @@ $connexion = App::getDB();
                     <div class="sqs-block html-block sqs-block-html" data-block-type="2"
                          id="block-yui_3_17_2_1_1571172005667_9277">
                         <div class="sqs-block-content">
-                            <h1 style="text-align:center;white-space:pre-wrap;">MERCHANDISE</h1>
+                            <h1 style="text-align:center;white-space:pre-wrap;">ARTICLES</h1>
                             <p class="" style="white-space:pre-wrap;">&nbsp;</p>
                         </div>
                     </div>
@@ -341,11 +393,11 @@ $connexion = App::getDB();
 
                         endforeach;
                     ?>
-                    <div class="sqs-block html-block sqs-block-html col-lg-12" data-block-type="2"
+                    <div class="sqs-block html-block sqs-block-html" data-block-type="2"
                          id="block-yui_3_17_2_1_1571172005667_10034">
                         <div class="sqs-block-content">
                             <h2 style="text-align:center;white-space:pre-wrap;">
-                                <a href="achat" target="_blank">CLICK HERE TO SHOP</a></h2>
+                                <a href="achat" target="_blank" style="font-weight: bold; color: white">EFFECTUER UN ACHAT</a></h2>
                         </div>
                     </div>
                 </div>
@@ -395,7 +447,7 @@ $connexion = App::getDB();
                                      id="block-yui_3_17_2_1_1524672773120_8523">
                                     <div class="sqs-block-content">
                                         <p style="text-align:center;white-space:pre-wrap;"><a
-                                                href="https://www.youtube.com/user/boyceavenue" target="_blank">CLICK HERE TO WATCH MORE</a> VIDEOS</p>
+                                                href="https://www.youtube.com/user/boyceavenue" target="_blank">CLIQUER ICI POUR VOIR LES</a> VIDEOS</p>
                                     </div>
                                 </div>
                                 <div class="row sqs-row">
@@ -556,27 +608,34 @@ $connexion = App::getDB();
                                 <div class="sqs-block html-block sqs-block-html col-lg-12" data-block-type="2"
                                      id="block-yui_3_17_2_1_1545001233574_31787">
                                     <div class="sqs-block-content">
-                                        <h2 style="white-space:pre-wrap;">Hi Friends, Sign up for early access to tickets, meet &amp; greets, merch deals, exclusive content, and more!</h2>
+                                        <h2 style="white-space:pre-wrap;">Salut les amis, Inscrivez-vous pour un accès anticipé aux billets, aux rencontres et aux salutations,
+                                            aux offres de merchandising, au contenu exclusif et plus encore !</h2>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-10">
-                                        <form>
+
+                                        <div id="idContact" class="alert alert-danger"
+                                             style="display:none;"></div>
+
+                                        <form id="singContact" class="user" role="form"
+                                              action="auth/Public/controllers/traitement.php?singContact=singContact" method="post">
                                             <div class="form-group">
-                                                <label for="validationServer01">First name</label>
-                                                <input class="form-control is-valid" id="validationServer01" placeholder="First name"
-                                                       required type="text" value="Mark">
+                                                <label for="email">Adresse Email *</label>
+                                                <input class="form-control is-valid" id="email" name="email"
+                                                       placeholder="Ex: contact@tekezik.com" required type="email">
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="validationServer03">City</label>
-                                                <input class="form-control is-invalid" id="validationServer03"
-                                                       placeholder="City" required type="text">
+                                                <label for="country">Pays *</label>
+                                                <input class="form-control is-invalid" id="country" name="country"
+                                                       placeholder="Ex: Cameroun" required type="text">
                                             </div>
 
                                             <div class="form-group">
-                                                <button class="btn btn-primary" type="submit">Submit form</button>
+                                                <button class="btn btn-primary currentSend" type="submit">Envoyer</button>
+                                                <img src="auth/Public/img/loader.gif" class="siteWebUploads" style="display:none;">
                                             </div>
 
                                         </form>
@@ -597,17 +656,17 @@ $connexion = App::getDB();
                 <div class="sqs-block html-block sqs-block-html col-lg-12" data-block-type="2"
                      id="block-yui_3_17_2_1_1587740377942_35202">
                     <div class="sqs-block-content">
-                        <h1 style="text-align:center;white-space:pre-wrap;">CONTACT US</h1>
+                        <h1 style="text-align:center;white-space:pre-wrap;">CONTACTEZ-NOUS</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="col-lg-12" style="padding-top: 17px;outline: none;">
-                        <a class="link animated fadeInUp delay-1s" href="#">CONTACT US</a>
+                        <a class="link animated fadeInUp delay-1s" href="contact-us.php">CONTACTEZ-NOUS</a>
                     </div>
 
-                    <div class="col-lg-12">
+                    <!--<div class="col-lg-12">
                         <a class="link animated fadeInUp delay-1s" href="#">Sync Enquiries</a>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="col-lg-12" style="padding-top: 17px;outline: none;">
@@ -621,7 +680,7 @@ $connexion = App::getDB();
                 </div>
 
                 <div class="divider">
-                    <img alt="" src="img/footer-tz.jpg" style="padding-top: 50px; padding-bottom: 50px; overflow: hidden">
+                    <img  class="img-responsive" alt="" src="img/footer-tz.jpg" style="padding-top: 50px; padding-bottom: 50px; overflow: hidden;">
                 </div>
 
                 <div class="nav-wrapper desktop-nav-wrapper" id="secondaryNavWrapper">
@@ -699,7 +758,6 @@ $connexion = App::getDB();
         -->
     </footer>
 
-
     <script type="text/javascript">
         $(document).ready(function (e) {
             $('#test').scrollToFixed();
@@ -711,6 +769,7 @@ $connexion = App::getDB();
 
         });
     </script>
+
 
     <script>
         wow = new WOW(
@@ -789,6 +848,104 @@ $connexion = App::getDB();
 
         });
 
+    </script>
+<!--
+    <script>
+        $(window).scroll(function () {
+            const head = $('#test');
+            console.log($(this).scrollTop());
+            if($(this).scrollTop() > 842){
+                head.removeClass('hidden');
+                head.css({
+                'padding': '0px',
+                'border-bottom': '2px solid #ddd',
+                'box-shadow': '0 4px 5px -3px #ececec',
+                'position': 'fixed',
+                'background-color': '#fff!important',
+                'text-align':'center'
+                });
+            }else {
+                head.addClass('hidden')
+            }
+        });
+    </script>-->
+
+    <script>
+        $(function() {
+
+            //souscription users
+            $('#singContact input').focus(function () {
+                $('#idContact').fadeOut(800);
+            });
+
+            $('#singContact').on('submit', function (e) {
+                /* On empêche le navigateur de soumettre le formulaire*/
+                e.preventDefault();
+
+
+                var statut1 = $('#idContact');
+                var email = $('#email').val(),
+                    country = $('#country').val();
+
+
+                if (email === '' || country === '') {
+                    statut1.html('Veuillez Remplir Tous les Champs').fadeIn(400);
+                }
+
+
+                $('.siteWebUploads').show();
+                $('.currentSend').attr('value', 'En cours...');
+                var $form = $(this);
+                var formdata = (window.FormData) ? new FormData($form[0]) : null;
+                var data = (formdata !== null) ? formdata : $form.serialize();
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    contentType: false, /* obligatoire pour de l'upload*/
+                    processData: false, /* obligatoire pour de l'upload*/
+                    dataType: 'json', /* selon le retour attendu*/
+                    data:data,
+                    success:function(data){
+                        var cat = $('#idContact');
+                        if(data.resultat === 'success'){
+                            $('.siteWebUploads').hide();
+                            cat.removeClass('alert-danger');
+                            cat.addClass('alert-success');
+                            $('.currentSend').attr('value', 'Submit');
+                            cat.html("Email enregistré avec succès").show();
+                            setTimeout(function () {
+                                cat.html("Email enregistré avec succès").slideDown().hide();
+                                /*$('body').load('index.php?id=1', function() {
+                                });*/
+                                $(location).attr('href',"index.php");
+                            }, 2000);
+
+                        } else if(data.resultat === 'success-update'){
+                            $('.siteWebUploads').hide();
+                            cat.removeClass('alert-danger');
+                            cat.addClass('alert-info');
+                            $('.currentSend').attr('value', 'Submit');
+                            cat.html('l\'utilisateur a été Modifié avec succès').show();
+                            setTimeout(function () {
+                                cat.html("utilisateur modifié avec succès.").slideDown().hide();
+                                $('body').load('index.php', function() {
+                                });
+                            }, 5000);
+                        }else {
+                            if(cat.hasClass('alert-success')){
+                                cat.removeClass('alert-success');
+                                cat.addClass('alert-danger');
+                            }
+                            cat.html(data.resultat).show();
+                            $('.siteWebUploads').hide();
+                            $('.currentSend').attr('value', 'Submit');
+                        }
+                    }
+
+                });
+            });
+        });
     </script>
 </div>
 </body>

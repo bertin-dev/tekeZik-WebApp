@@ -336,7 +336,7 @@ if (isset($_SESSION['ID_USER'])) {
                                     <h1 class="h3 mb-1 text-gray-800">Modifier Footer</h1>
                                     <div id="rapportFt" class="alert alert-danger" style="display:none;"></div>
                                     <form class="user form_Ft" role="form"
-                                          action="controllers/traitement.php?updateIng=updateIng" method="post">
+                                          action="controllers/traitement.php?updateEvent=updateEvent" method="post">
                                         <input type="hidden" name="event_id" value="<?= $ing->id; ?>">
 
                                         <div class="form-group">

@@ -968,3 +968,164 @@ if(isset($_GET['update_article'])) {
     }
     echo $message;
 }
+
+
+
+/* ==========================================================================
+DELETE COMMANDE
+========================================================================== */
+if(isset($_GET['delCmd'])){
+
+    foreach ($connexion->query('SELECT * FROM paniers p WHERE ip = "'.get_ip().'" AND article_id = "'.$_GET['delCmd'].'" ') as $del):
+
+
+        $connexion->delete('DELETE FROM paniers WHERE article_id=:id', ['id' =>$del->article_id]);
+
+    endforeach;
+
+    header('Location: ../report.php');
+}
+
+
+//contact
+if(isset($_GET['singContact'])) {
+    $msg = "";
+
+    if(is_numeric($_POST['country'][0])){
+        $msg = 'Le pays doit commencer par une lettre';
+        //exit;
+    }
+
+    /*-------------------------------*/
+    if(is_numeric($_POST['email'][0])){
+        $msg = 'L\'email doit commencer par une lettre';
+        //exit;
+    }
+    if (!preg_match('/^[A-Z\d\._-]+@[A-Z\d\.-]{2,}\.[A-Z]{2,4}$/i', $_POST['email'])) {
+        $msg = "Email Invalid";
+        //exit();
+    }
+
+    $_POST['country'] = strtolower(stripslashes(htmlspecialchars($_POST['country'])));
+    $_POST['email'] = strtolower(stripslashes(htmlspecialchars($_POST['email'])));
+
+
+
+    // Connexion à la base de données
+
+    $nbre = $connexion->rowCount('SELECT id FROM users WHERE email="'.$_POST['email'].'"');
+
+    if($nbre > 0){
+        $msg = 'Email déjà utilisé';
+        //exit;
+    }
+
+    else {
+
+        nettoieProtect();
+        extract($_POST);
+
+        $connexion->insert('INSERT INTO users(country, email, ip, created_at) 
+                                      VALUES(?,?,?,?)', [strtolower($_POST['country']), strtolower($_POST['email']), get_ip(), time()]);
+
+        $max = $connexion->prepare_request('SELECT Max(id) AS max_id FROM users ORDER BY id DESC LIMIT 1 ', array());
+
+        $_SESSION['ID_USER'] = $max['max_id'];
+        $_SESSION['EMAIL_USER'] = $_POST['email'];
+
+
+        $connexion->insert('INSERT INTO journal(users_id, name, ip, created_at)
+                                               VALUES(?, ?, ?, ?)', array($max['max_id'], 'Enregistrement email utilisateur', get_ip(), time()));
+        $msg = 'success';
+    }
+
+    $data = array(
+        'resultat' => $msg
+    );
+    echo json_encode($data);
+
+}
+
+//contact-us
+if(isset($_GET['singContact2'])) {
+    $msg = "";
+
+    if(is_numeric($_POST['last_name'][0])){
+        $msg = 'Le Nom doit commencer par une lettre';
+        //exit;
+    }
+    // Vérification de la validité des champs
+    if (!preg_match('/^[A-Za-z0-9-_ ]{3,50}$/', $_POST['last_name'])) {
+        $msg = "Le Nom est Invalid";
+        //exit();
+    }
+
+    /*-------------------------------*/
+    if(is_numeric($_POST['first_name'][0])){
+        $msg = 'Le Prenom doit commencer par une lettre';
+        //exit;
+    }
+
+    if (!preg_match('/^[A-Za-z0-9-_ ]{3,50}$/', $_POST['first_name'])) {
+        $msg = "Le Prenom est Invalid";
+        //exit();
+    }
+
+
+    /*-------------------------------*/
+    if(is_numeric($_POST['email'][0])){
+        $msg = 'L\'email doit commencer par une lettre';
+        //exit;
+    }
+    if (!preg_match('/^[A-Z\d\._-]+@[A-Z\d\.-]{2,}\.[A-Z]{2,4}$/i', $_POST['email'])) {
+        $msg = "Email Invalid";
+        //exit();
+    }
+
+    $_POST['last_name'] = strtolower(stripslashes(htmlspecialchars($_POST['last_name'])));
+    $_POST['first_name'] = strtolower(stripslashes(htmlspecialchars($_POST['first_name'])));
+    $_POST['subject'] = strtolower(stripslashes(htmlspecialchars($_POST['subject'])));
+    $_POST['email'] = strtolower(stripslashes(htmlspecialchars($_POST['email'])));
+    $_POST['message'] = strtolower(stripslashes(htmlspecialchars($_POST['message'])));
+
+
+
+    // Connexion à la base de données
+
+    $nbre = $connexion->rowCount('SELECT id FROM users WHERE email="'.$_POST['email'].'"');
+
+    if($nbre > 0){
+        $msg = 'Email déjà utilisé';
+        //exit;
+    }
+
+    else {
+
+        nettoieProtect();
+        extract($_POST);
+
+        //$id_forum = $connexion->prepare_request('SELECT id_blog FROM blog', array());
+        $connexion->insert('INSERT INTO users(last_name, first_name, email, subject, message, ip, created_at) 
+                                      VALUES(?,?,?,?,?,?,?)', [strtolower($_POST['last_name']), strtolower($_POST['first_name']),
+            strtolower($_POST['email']), $_POST['subject'], $_POST['message'], get_ip(),  time()]);
+
+        $max = $connexion->prepare_request('SELECT Max(id) AS max_id FROM users ORDER BY id DESC LIMIT 1 ', array());
+
+        $_SESSION['ID_USER'] = $max['max_id'];
+        $_SESSION['EMAIL_USER'] = $_POST['email'];
+
+
+        $connexion->insert('INSERT INTO journal(users_id, name, ip, created_at)
+                                               VALUES(?, ?, ?, ?)', array($max['max_id'], 'contact utilisateur enregistré', get_ip(), time()));
+
+        $msg = 'success';
+
+
+    }
+
+    $data = array(
+        'resultat' => $msg
+    );
+    echo json_encode($data);
+
+}
