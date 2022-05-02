@@ -26,13 +26,35 @@ function get_ip(){
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>E-COMMERCE | Teke ZIK</title>
+        <meta name="description"
+              content="Teke zik est un groupe camerounais de reprises de chansons contemporaines et classiques sur youtube
+          formé à yaoundé par les amis: Ntsobe Belinga Wilfried Roger, zibi André Jude, et Ngazanga Ayissi Patrice isreal. Après avoir poursuivi
+          leurs objectifs éducatifs respectifs étant passionné de musique, Wilfried (Percussionniste, guitariste) Jude(pianiste)
+          isreal (Chanteur pianiste et guitariste) se rencontrent pour la première fois dans un club de musique de capitale ou ils commencent à partager
+          la même scène lors des free jam. c'est le déclic les trois amis ne vont plus se quitter des yeux, ils vont ainsi multiplier de nombreux show dans divers clubs
+          se faisant remarqué ils vont également être sollicité par des particuliers pour divers prestations privées.
+          En 2020 ils décident ainsi d'officialiser leur groupe">
+        <meta name="author" content="Bertin Mounok, bertin-dev, bertin.dev, https://bertin-mounok.cm, Wilfried (Percussionniste, guitariste), Jude(pianiste), isreal (Chanteur pianiste et guitariste)">
+        <meta name="keywords" lang="fr" content="https://tekezik.com, Teke ZIK, acoustic, coversong, acousticcover, pianocover, guitarcover, covermusic, lovesong, love,
+    cover, lovesongs, #cover, acousticguitar, youtubemusic, youtuber, free jam, freejam">
+        <meta name="copyright" content="© <?= date('Y', time()); ?>, Teke ZIK.">
+        <meta name="language" content="fr">
+
+        <meta name="Application-Web-Portfolio" content="Mes Covers">
+        <meta property="og:site_name" content="E-COMMERCE / TEKE ZIK">
+        <meta property="og:title" content="E-COMMERCE | TEKE ZIK">
+        <meta property="og:url" content="https://tekezik.com">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="fr_FR">
+        <meta property="og:locale:alternate" content="en_US">
+        <meta property="og:image" content="<?= 'https://'.$_SERVER['HTTP_HOST'].'../../img/home.jpg';?>">
+
         <!-- Favicon-->
         <link href="../tz.png" rel="icon" type="image/png">
         <link href="../tz.ico" rel="shortcut icon" type="img/x-icon">
@@ -47,7 +69,7 @@ function get_ip(){
         <!-- Navigation-->
         <nav id="articles" class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.php">Teke ZIK</a>
+                <a class="navbar-brand" href="../index.php">Teke ZIK</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
