@@ -139,7 +139,7 @@ function get_ip(){
                                                 foreach (App::getDB()->query('SELECT p.id AS PiD, COUNT(*) AS nbrArticle, name, SUM(price) AS pTotal, price, image, article_id FROM articles INNER JOIN paniers p 
                                                                                        ON articles.id = p.article_id
                                                                                        WHERE ip = "'.get_ip().'"
-                                                                                       GROUP BY price') as $ingredient):
+                                                                                       GROUP BY price, p.id') as $ingredient):
 
                                                     echo '<tr>
                                                 <td title="Articles">' . $ingredient->name . '</td> 
@@ -178,7 +178,7 @@ function get_ip(){
                                                 <th>Moyen de paiement</th>
                                                 <th>Bénéficiaire</th>
                                                 <th>Telephone</th>
-                                                <th>Valider</th>
+                                                <th class="col">Valider</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -191,7 +191,7 @@ function get_ip(){
                                                                                    INNER JOIN paniers p 
                                                                                    ON articles.id = p.article_id
                                                                                    WHERE ip = "'.get_ip().'"
-                                                                                   GROUP BY price') as $ingredient):
+                                                                                   GROUP BY price, p.id') as $ingredient):
 
                                                 $total += $ingredient->pTotal;
                                                 $nbre += $ingredient->nbrArticle;

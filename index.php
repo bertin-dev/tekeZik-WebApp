@@ -429,22 +429,35 @@ $connexion = App::getDB();
     </section><!--main-section alabaster-end-->
 
 
-    <section class="index-section no-main-image page alt-section" id="video"><!--header-start-->
+    <section class="index-section no-main-image page alt-section">
+    <!--header-start-->
         <div class="index-section-wrapper has-main-media">
 
             <!-- For Pages -->
             <div class="index-section-image content-fill">
                 <div class="sqs-video-background content-fill mobile"
                      data-config-filter="" data-config-filter-strength=""
-                     data-config-playback-speed="1" data-config-url="https://www.youtube.com/watch?v=3G8CM-6BZC4" style="overflow: hidden;">
-                    <img alt="Perfect (YouTube Final).00_00_01_16.Still002.jpg"
+                     data-config-playback-speed="1" data-config-url="https://www.youtube.com/watch?v=y_0wlSCBS-A" style="overflow: hidden;">
+                    <img alt="yt_cover.jpg"
                          class="custom-fallback-image"
-                         data-image="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg" data-image-dimensions="2500x1407"
+                         data-image="yt_cover.jpg" data-image-dimensions="2500x1407"
                          data-image-focal-point="0.5,0.5" data-image-resolution="1500w"
                          data-parent-ratio="2.5"
-                         data-src="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg" src="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg?format=1500w"
+                         data-src="yt_cover.jpg"
+                         src="yt_cover.jpg?format=1500w"
                          style="left: 0px; top: -108.609px; width: 1349px; height: 759.217px; position: relative;">
-                    <div id="player"></div>
+                    <iframe id="player"
+                            style="position: absolute;
+                            inset: -108.406px 0px 0px;
+                            width: 1349px;
+                            height: 758.812px;"
+                            frameborder="0"
+                            allowfullscreen="1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            title="YouTube video player"
+                            width="640"
+                            height="360"
+                            src="https://www.youtube.com/embed/3G8CM-6BZC4?autohide=1&amp;autoplay=0&amp;controls=0&amp;enablejsapi=1&amp;iv_load_policy=3&amp;loop=0&amp;modestbranding=1&amp;playsinline=1&amp;rel=0&amp;showinfo=0&amp;wmode=opaque&amp;origin=https%3A%2F%2Fwww.boyceavenue.com&amp;widgetid=1" class="background-video ready"></iframe>
                 </div>
             </div>
             <div class="index-image-overlay"></div>
@@ -470,7 +483,7 @@ $connexion = App::getDB();
                                      id="block-yui_3_17_2_1_1524672773120_8523">
                                     <div class="sqs-block-content">
                                         <p style="text-align:center;white-space:pre-wrap;"><a
-                                                href="https://www.youtube.com/user/boyceavenue" target="_blank">CLIQUER ICI POUR VOIR LES</a> VIDEOS</p>
+                                                href="https://www.youtube.com/watch?v=y_0wlSCBS-A" target="_blank">CLIQUER ICI POUR VOIR LES</a> VIDEOS</p>
                                     </div>
                                 </div>
                                 <div class="row sqs-row">
@@ -485,8 +498,10 @@ $connexion = App::getDB();
                                              id="block-yui_3_17_2_12_1458149909129_63822">
                                             <div class="sqs-block-content">
                                                 <center>
-                                                    <a href="https://www.youtube.com/user/boyceavenue" target="_blank">
-                                                        <img name="image1" onmouseout="http://content.boyceavenue.com/images/youtube.png" onmouseover="http://content.boyceavenue.com/images/youtube.png"
+                                                    <a href="yt_cover.jpg" target="_blank">
+                                                        <img name="image1"
+                                                             onmouseout="yt_cover.jpg"
+                                                             onmouseover="yt_cover.jpg"
                                                              src="img/youtube_grey.png"
                                                              style="border: 0;opacity:.7;"
                                                              title="Title Text" width="200">
@@ -511,6 +526,7 @@ $connexion = App::getDB();
             <!-- For Albums -->
         </div>
     </section><!--header-end-->
+
 
 
     <section class="index-section page client-follow" id="follow">
@@ -551,13 +567,14 @@ $connexion = App::getDB();
                                     <?php
                                     foreach ($connexion->query($requete) as $user):
 
-                                        echo '<div class="col-lg-2 col-md-2 col-xs-12">
+                                        echo '
+                                    <div class="col-lg-2 col-md-2 col-xs-12">
                                         <div class="sqs-block spacer-block sqs-block-spacer sized vsize-1"
                                              data-block-type="21" id="block-47288335b132b01948d0">
                                             <div class="sqs-block-content">&nbsp;</div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-6">
+                                    <div class="col-lg-2 col-md-2 col-xs-6" style="padding-top: 25px">
                                         <div class="sqs-block code-block sqs-block-code" data-block-type="23"
                                              id="block-e15fb9a107d54cefed12">
                                             <div class="sqs-block-content">
@@ -573,7 +590,7 @@ $connexion = App::getDB();
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-6">
+                                    <div class="col-lg-2 col-md-2 col-xs-6" style="padding-top: 25px">
                                         <div class="sqs-block code-block sqs-block-code" data-block-type="23"
                                              id="block-3f1c92bd215989bd8b5d">
                                             <div class="sqs-block-content">
@@ -588,7 +605,7 @@ $connexion = App::getDB();
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-6">
+                                    <div class="col-lg-2 col-md-2 col-xs-6" style="padding-top: 25px">
                                         <div class="sqs-block code-block sqs-block-code" data-block-type="23"
                                              id="block-4f250f0030cde19a2071">
                                             <div class="sqs-block-content">
@@ -603,7 +620,7 @@ $connexion = App::getDB();
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-6">
+                                    <div class="col-lg-2 col-md-2 col-xs-6" style="padding-top: 25px">
                                         <div class="sqs-block code-block sqs-block-code" data-block-type="23"
                                              id="block-1acf444b937390a4741e">
                                             <div class="sqs-block-content">
@@ -780,6 +797,31 @@ $connexion = App::getDB();
             You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Knight
         -->
     </footer>
+
+
+
+    <div id="video-section" class="index-section no-main-image page alt-section" data-url-id="video" data-collection-id="56e99cec8259b5479796ead5" data-edit-main-image="Background">
+        <div class="index-section-wrapper has-main-media" id="yui_3_17_2_1_1653653078239_1005">
+            <!-- For Pages -->
+            <div class="index-section-image content-fill" id="yui_3_17_2_1_1653653078239_1004">
+                <div class="sqs-video-background content-fill" data-config-url="https://www.youtube.com/watch?v=3G8CM-6BZC4" data-config-playback-speed="1" data-config-filter="" data-config-filter-strength="" style="overflow: hidden;" id="yui_3_17_2_1_1653653078239_1008">
+                    <img data-src="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg" data-image="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg" data-image-dimensions="2500x1407" data-image-focal-point="0.5,0.5" class="custom-fallback-image" data-parent-ratio="2.5" style="left: 0px; top: -108.609px; width: 1349px; height: 759.217px; position: relative;" alt="Perfect (YouTube Final).00_00_01_16.Still002.jpg" data-image-resolution="1500w" src="https://images.squarespace-cdn.com/content/v1/56d1077e8a65e2c2b911c5fa/1540563252241-L4F5L0CINVLXHQUCZGC2/Perfect+%28YouTube+Final%29.00_00_01_16.Still002.jpg?format=1500w">
+                    <iframe id="player" style="position: absolute; inset: -108.406px 0px 0px; width: 1349px; height: 758.812px;" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="640" height="360" src="https://www.youtube.com/embed/3G8CM-6BZC4?autohide=1&amp;autoplay=0&amp;controls=0&amp;enablejsapi=1&amp;iv_load_policy=3&amp;loop=0&amp;modestbranding=1&amp;playsinline=1&amp;rel=0&amp;showinfo=0&amp;wmode=opaque&amp;origin=https%3A%2F%2Fwww.boyceavenue.com&amp;widgetid=1" class="background-video ready"></iframe>
+                </div>
+            </div>
+            <div class="index-image-overlay"></div>
+            <div class="content page-content has-main-media tmpl-loading" id="video-page" data-url-id="video">
+                <div class="content-inner has-content">
+                    <div class="sqs-layout sqs-grid-12 columns-12" data-type="page" data-updated-on="1555350152285" id="page-56e99cec8259b5479796ead5"><div class="row sqs-row"><div class="col sqs-col-12 span-12"><div class="sqs-block markdown-block sqs-block-markdown" data-block-type="44" id="block-yui_3_17_2_2_1458242679173_13796"><div class="sqs-block-content" id="yui_3_17_2_1_1653653078239_852"><h1 id="-center-data-preserve-html-node-true-span-data-preserve-html-node-true-style-color-ffffff-video-span-" data-shrink-original-size="72"><center data-preserve-html-node="true"><span data-preserve-html-node="true" style="color: #FFFFFF;">VIDEO</span></center></h1>
+                                    </div></div><div class="sqs-block html-block sqs-block-html" data-block-type="2" id="block-yui_3_17_2_1_1524672773120_8523"><div class="sqs-block-content"><p style="text-align:center;white-space:pre-wrap;"><a href="https://www.youtube.com/user/boyceavenue" target="_blank">CLICK HERE TO WATCH MORE</a> VIDEOS</p>
+                                    </div></div><div class="row sqs-row"><div class="col sqs-col-4 span-4"><div class="sqs-block spacer-block sqs-block-spacer sized vsize-1" data-block-type="21" id="block-yui_3_17_2_12_1458149909129_65112"><div class="sqs-block-content">&nbsp;</div></div></div><div class="col sqs-col-4 span-4"><div class="sqs-block code-block sqs-block-code" data-block-type="23" id="block-yui_3_17_2_12_1458149909129_63822"><div class="sqs-block-content"><center><a href="https://www.youtube.com/user/boyceavenue" target="_blank"><img src="http://content.boyceavenue.com/images/youtube.png" name="image1" title="Title Text" onmouseover="http://content.boyceavenue.com/images/youtube.png" onmouseout="http://content.boyceavenue.com/images/youtube.png" width="200" style="border: 0;opacity:.7;"></a></center></div></div></div><div class="col sqs-col-4 span-4"><div class="sqs-block spacer-block sqs-block-spacer sized vsize-1" data-block-type="21" id="block-yui_3_17_2_12_1458149909129_65923"><div class="sqs-block-content">&nbsp;</div></div></div></div></div></div></div>
+                </div>
+            </div>
+            <!-- For Galleries -->
+            <!-- For Albums -->
+        </div>
+    </div>
+
 
     <script type="text/javascript">
         $(document).ready(function (e) {
